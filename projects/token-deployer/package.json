@@ -7,6 +7,9 @@
   "scripts": {
     "compile": "hardhat compile"
   },
+  "dependencies": {
+      "networks": "*"
+  },
   "devDependencies": {
     "@openzeppelin/contracts": "4.3.2",
     "ethers": "^5.5.1"

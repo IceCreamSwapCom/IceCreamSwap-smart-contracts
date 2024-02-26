@@ -12,6 +12,9 @@
     "test:coverage": "npx hardhat coverage",
     "test:size-contracts": "npx hardhat size-contracts"
   },
+  "dependencies": {
+      "networks": "*"
+  },
   "devDependencies": {
     "@openzeppelin/contracts": "^4.4.2"
   }

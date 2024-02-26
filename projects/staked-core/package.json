@@ -7,6 +7,9 @@
   "scripts": {
     "compile": "npx hardhat compile"
   },
+  "dependencies": {
+      "networks": "*"
+  },
   "devDependencies": {
     "@openzeppelin/contracts": "^4.8.1"
   }
