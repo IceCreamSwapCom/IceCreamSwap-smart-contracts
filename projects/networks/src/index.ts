@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-import "dotenv/config"
+import "dotenv/config";
 
 interface NetworkUserConfig {
   url: string;
