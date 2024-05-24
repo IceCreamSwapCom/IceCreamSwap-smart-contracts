@@ -14,6 +14,7 @@ async function main() {
     factory: factory.target.toString(),
     router: router.target.toString(),
     initCodeHash,
+    deploymentTs: Math.floor(Date.now() / 1000),
   };
   writeFileSync(`./deployments/${chainName}.json`, JSON.stringify(contracts, null, 2));
 }
