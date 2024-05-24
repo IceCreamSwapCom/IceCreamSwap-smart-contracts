@@ -376,6 +376,16 @@ const chainConfigs = {
     oneDollarInNative: "250000000000000",
     weth: "0xBb5e1777A331ED93E07cF043363e48d320eb96c4",
   },
+  lightlink: {
+    chainId: 1890,
+    url: "https://replicator.phoenix.lightlink.io/rpc/v1",
+    explorer: "https://phoenix.lightlink.io/",
+    explorerApi: "https://phoenix.lightlink.io/api",
+    explorerApiKey: "NoKeyRequired",
+    bridgeDomainId: -1,
+    oneDollarInNative: "250000000000000",
+    weth: "0x7EbeF2A4b1B09381Ec5B9dF8C5c6f2dBECA59c73",
+  }
 } as const;
 
 export default chainConfigs;
