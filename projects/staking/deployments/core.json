@@ -1,0 +1,12 @@
+{
+  "factory": "0xC87De04e2EC1F4282dFF2933A2D58199f688fC3d",
+  "deploymentTs": 1738333920,
+  "pools": [
+    {
+      "pool": "0x44882628CaBf547890f3304ED77D9b5dcec7fD75",
+      "staking_token": "0xd698320cD0b571b62e57826d470C2B8D2FF1d04E",
+      "reward_token_address": "0xd698320cD0b571b62e57826d470C2B8D2FF1d04E",
+      "tokenPerBlock": "0.000000135102872151"
+    }
+  ]
+}

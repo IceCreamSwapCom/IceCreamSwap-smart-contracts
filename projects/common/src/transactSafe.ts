@@ -16,5 +16,5 @@ export const transactSafe = async (contractMethod: ContractMethod, contractParam
   }
 
   const tx: TransactionResponse = await contractMethod(...contractParameters);
-  await tx.wait();
+  return await tx.wait();
 };

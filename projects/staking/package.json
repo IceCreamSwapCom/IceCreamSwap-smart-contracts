@@ -1,11 +1,11 @@
 {
-  "name": "staking",
+  "name": "@icecreamswap/staking",
   "version": "2.0.0",
-  "main": "index.js",
   "license": "MIT",
   "private": true,
   "scripts": {
     "compile": "npx hardhat compile",
+    "deployStakingPool": "npx hardhat run scripts/deployStakingPool.ts",
     "test": "npx hardhat test"
   },
   "dependencies": {
