@@ -1,10 +1,13 @@
-import { deployAndVerify, dexConfig, getChainConfig } from "@icecreamswap/common";
+import { deployAndVerify, dexConfig, getChainConfig, transactSafe } from "@icecreamswap/common";
 import { writeFileSync } from "fs";
+import { ethers } from "hardhat";
 
 async function main() {
   const { chainConfig, chainName } = await getChainConfig();
 
-  const factory = await deployAndVerify("IceCreamSwapV2Factory", [dexConfig.dexAdmin, 50]);
+  const factory = await deployAndVerify("IceCreamSwapV2Factory", [(await ethers.getSigners())[0].address, 100]);
+  await transactSafe(factory.setFeeTo, [dexConfig.feeCollector]);
+  await transactSafe(factory.setFeeToSetter, [dexConfig.dexAdmin]);
 
   const router = await deployAndVerify("IceCreamSwapV2Router", [factory.target, chainConfig.weth]);
 

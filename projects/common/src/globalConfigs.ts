@@ -55,6 +55,7 @@ export const bridgeConfig: BridgeConfig = {
 
 export const dexConfig = {
   dexAdmin: "0x0075C169d8887F902cF881fEdC26AD0EbC7c8c19",
+  feeCollector: "0x2Bfd1fc5e25a8F55C2E849492ad7966EA8A0dd9E",
 } as const;
 
 export const farmConfig = {
