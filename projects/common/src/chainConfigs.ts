@@ -376,6 +376,26 @@ const chainConfigs = {
     oneDollarInNative: "250000000000000",
     weth: "0xBb5e1777A331ED93E07cF043363e48d320eb96c4",
   },
+  bera: {
+    chainId: 80094,
+    url: "https://rpc.berachain.com",
+    explorer: "https://berascan.com/",
+    explorerApi: "https://api.berascan.com/api",
+    explorerApiKey: process.env.EXPLORER_API_KEY_BERA,
+    bridgeDomainId: -1,
+    oneDollarInNative: "100000000000000000",
+    weth: "0x6969696969696969696969696969696969696969"
+  },
+  unichain: {
+    chainId: 130,
+    url: "https://mainnet.unichain.org",
+    explorer: "https://uniscan.xyz",
+    explorerApi: "https://api.uniscan.xyz/api",
+    explorerApiKey: process.env.EXPLORER_API_KEY_UNICHAIN,
+    bridgeDomainId: -1,
+    oneDollarInNative: "380000000000000",
+    weth: "0x4200000000000000000000000000000000000006"
+  }
 } as const;
 
 export default chainConfigs;
