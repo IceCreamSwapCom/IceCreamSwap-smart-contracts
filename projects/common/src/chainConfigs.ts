@@ -395,6 +395,16 @@ const chainConfigs = {
     bridgeDomainId: -1,
     oneDollarInNative: "380000000000000",
     weth: "0x4200000000000000000000000000000000000006"
+  },
+  hyperevm: {
+    chainId: 999,
+    url: "https://rpc.hyperliquid.xyz/evm",
+    explorer: "https://hyperliquid.cloud.blockscout.com/",
+    explorerApi: "https://hyperliquid.cloud.blockscout.com/api",
+    explorerApiKey: "NoKeyRequired",
+    bridgeDomainId: -1,
+    oneDollarInNative: "40000000000000000",
+    weth: "0x5555555555555555555555555555555555555555"
   }
 } as const;
 
