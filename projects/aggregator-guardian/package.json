@@ -1,0 +1,17 @@
+{
+  "name": "@icecreamswap/guardian",
+  "version": "2.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deployGuardian": "npx hardhat run scripts/deploy.ts",
+    "test": "npx hardhat test"
+  },
+  "dependencies": {
+    "@icecreamswap/common": "*"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.2.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@icecreamswap/executor",
+  "version": "2.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "deployExecutor": "npx hardhat run scripts/deploy.ts"
+  },
+  "dependencies": {
+    "@icecreamswap/common": "*",
+    "@openzeppelin/contracts": "^5.2.0"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.2.0",
+    "hardhat": "^2.22.18"
+  }
+}
