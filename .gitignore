@@ -22,11 +22,16 @@ yarn-error.log*
 
 # artifacts/cache/data
 artifacts
+!projects/aggregator-executor/artifacts
+
 cache
+!projects/aggregator-executor/cache
+
 
 coverage.json
 
 @openzeppelin
+!projects/aggregator-executor/artifacts/@openzeppelin
 @pancakeswap
 bsc-library
 

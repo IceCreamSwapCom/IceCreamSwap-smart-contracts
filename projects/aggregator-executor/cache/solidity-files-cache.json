@@ -1,0 +1,264 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/AggregatorExecutor.sol": {
+      "lastModificationDate": 1740155721403,
+      "contentHash": "8872bddb8bebb5601f83c008d787a120",
+      "sourceName": "contracts/AggregatorExecutor.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "./interfaces/IAggregatorExecutor.sol",
+        "./interfaces/IUniswapV2Pool.sol",
+        "./interfaces/IUniswapV3Pool.sol",
+        "./interfaces/IWeth.sol",
+        "./libaries/CalldataDecoder.sol"
+      ],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "AggregatorExecutor"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/interfaces/IAggregatorExecutor.sol": {
+      "lastModificationDate": 1740147685617,
+      "contentHash": "d26ddb4616e59e07c3e4e1c3ff9409b7",
+      "sourceName": "contracts/interfaces/IAggregatorExecutor.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "IAggregatorExecutor"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/interfaces/IUniswapV3Pool.sol": {
+      "lastModificationDate": 1740147685617,
+      "contentHash": "4b87f621bb03547b623b046d5ba3ce1d",
+      "sourceName": "contracts/interfaces/IUniswapV3Pool.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "IUniswapV3Pool"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/interfaces/IUniswapV2Pool.sol": {
+      "lastModificationDate": 1740147685617,
+      "contentHash": "b0dd0111940b1802dd7490ffe0436176",
+      "sourceName": "contracts/interfaces/IUniswapV2Pool.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "IUniswapV2Pool"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/interfaces/IWeth.sol": {
+      "lastModificationDate": 1740147685617,
+      "contentHash": "d0a14605bdf4e31e0a759b361857a7d5",
+      "sourceName": "contracts/interfaces/IWeth.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "IWeth"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/contracts/libaries/CalldataDecoder.sol": {
+      "lastModificationDate": 1740147685617,
+      "contentHash": "65d0ceebf6b5cad58edd92545c4df3dc",
+      "sourceName": "contracts/libaries/CalldataDecoder.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.26"
+      ],
+      "artifacts": [
+        "CalldataDecoder"
+      ]
+    },
+    "/Users/lars/Documents/GitHub/AggregatorContracts/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1740155686714,
+      "contentHash": "8f19f64d2adadf448840908bbaf431c8",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.26",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    }
+  }
+}
