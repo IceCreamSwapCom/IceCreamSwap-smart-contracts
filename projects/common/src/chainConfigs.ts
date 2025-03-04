@@ -212,7 +212,7 @@ const chainConfigs = {
     explorer: "https://arbiscan.io",
     explorerApi: "https://api.arbiscan.io/api",
     explorerApiKey: process.env.EXPLORER_API_KEY_ARBITRUM,
-    bridgeDomainId: -1,
+    bridgeDomainId: 18,
     oneDollarInNative: "340000000000000",
     weth: "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
   },

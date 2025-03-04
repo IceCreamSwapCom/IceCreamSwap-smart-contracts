@@ -50,6 +50,13 @@ export const bridgeConfig: BridgeConfig = {
       rateLimit4h: "1500000000000000000", // 1.5
       rateLimit1d: "4000000000000000000", // 4
     },
+    {
+      symbol: "SQD",
+      name: "Subsquid",
+      resourceId: "0x00000000000000000000001337420dED5ADb9980CFc35f8f2B054ea86f8aB112",
+      rateLimit4h: "400000000000000000000000", // 400_000
+      rateLimit1d: "1000000000000000000000000", // 1_000_000
+    },
   ],
 };
 
