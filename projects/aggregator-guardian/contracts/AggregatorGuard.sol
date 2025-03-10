@@ -24,19 +24,22 @@ contract AggregatorGuard {
 
     function IceCreamSwap() external payable returns (uint256 amountOut) {
         IAggregatorExecutor executor;
-        address firstTokenReceiver;
-        IERC20 tokenIn;
-        IERC20 tokenOut;
         uint128 amountIn;
         uint128 minAmountOut;
 
+        address firstTokenReceiver;
+        address recipient;
+        IERC20 tokenIn;
+        IERC20 tokenOut;
+
         assembly {
             executor := shr(96, calldataload(4))
-            firstTokenReceiver := shr(96, calldataload(24))
-            tokenIn := shr(96, calldataload(44))
-            tokenOut := shr(96, calldataload(64))
-            amountIn := shr(128, calldataload(84))
-            minAmountOut := shr(128, calldataload(100))
+            amountIn := shr(128, calldataload(24))
+            minAmountOut := shr(128, calldataload(40))
+            firstTokenReceiver := shr(96, calldataload(57))
+            recipient := shr(96, calldataload(77))
+            tokenIn := shr(96, calldataload(97))
+            tokenOut := shr(96, calldataload(117))
         }
 
         if (address(tokenIn) != ETH) {
@@ -47,20 +50,20 @@ contract AggregatorGuard {
         } else {
             require(amountIn == msg.value, "incorrect value");
         }
-        
-        uint256 balanceBefore = (address(tokenOut) == ETH) ? msg.sender.balance : tokenOut.balanceOf(msg.sender);
+
+        uint256 balanceBefore = (address(tokenOut) == ETH) ? recipient.balance : tokenOut.balanceOf(recipient);
 
         executor.executeSwap{value: msg.value}(msg.data[24:]);
 
         if (address(tokenOut) != ETH) {
-            amountOut = tokenOut.balanceOf(msg.sender) - balanceBefore;
+            amountOut = tokenOut.balanceOf(recipient) - balanceBefore;
         } else {
-            amountOut = msg.sender.balance - balanceBefore;
+            amountOut = recipient.balance - balanceBefore;
         }
         require(amountOut >= minAmountOut, "Insufficient output");
 
         emit AggregatedTrade(
-            msg.sender,
+            recipient,
             address(tokenIn),
             address(tokenOut),
             address(executor),
