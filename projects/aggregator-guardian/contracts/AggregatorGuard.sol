@@ -10,9 +10,10 @@ contract AggregatorGuard {
     address constant ETH = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 
     event AggregatedTrade(
+        uint16 indexed id,
         address indexed user,
-        address indexed tokenIn,
-        address indexed tokenOut,
+        address tokenIn,
+        address tokenOut,
         address executor,
         uint256 amountIn,
         uint256 amountOut,
@@ -22,7 +23,8 @@ contract AggregatorGuard {
     receive() external payable { }
     fallback() external payable { } // optional, add for remix to allow low level interactions
 
-    function IceCreamSwap() external payable returns (uint256 amountOut) {
+    function IceCreamSwap() external payable returns (uint256) {
+        uint16 id;
         IAggregatorExecutor executor;
         uint128 amountIn;
         uint128 minAmountOut;
@@ -33,13 +35,14 @@ contract AggregatorGuard {
         IERC20 tokenOut;
 
         assembly {
-            executor := shr(96, calldataload(4))
-            amountIn := shr(128, calldataload(24))
-            minAmountOut := shr(128, calldataload(40))
-            firstTokenReceiver := shr(96, calldataload(57))
-            recipient := shr(96, calldataload(77))
-            tokenIn := shr(96, calldataload(97))
-            tokenOut := shr(96, calldataload(117))
+            id := shr(96, calldataload(4))
+            executor := shr(96, calldataload(6))
+            amountIn := shr(128, calldataload(26))
+            minAmountOut := shr(128, calldataload(42))
+            firstTokenReceiver := shr(96, calldataload(59))
+            recipient := shr(96, calldataload(79))
+            tokenIn := shr(96, calldataload(99))
+            tokenOut := shr(96, calldataload(119))
         }
 
         if (address(tokenIn) != ETH) {
@@ -49,12 +52,14 @@ contract AggregatorGuard {
             }
         } else {
             require(amountIn == msg.value, "incorrect value");
+            require(firstTokenReceiver == address(executor), "Native receiver must bee executor");
         }
 
         uint256 balanceBefore = (address(tokenOut) == ETH) ? recipient.balance : tokenOut.balanceOf(recipient);
 
         executor.executeSwap{value: msg.value}(msg.data[24:]);
 
+        uint256 amountOut;
         if (address(tokenOut) != ETH) {
             amountOut = tokenOut.balanceOf(recipient) - balanceBefore;
         } else {
@@ -63,6 +68,7 @@ contract AggregatorGuard {
         require(amountOut >= minAmountOut, "Insufficient output");
 
         emit AggregatedTrade(
+            id,
             recipient,
             address(tokenIn),
             address(tokenOut),
@@ -71,5 +77,7 @@ contract AggregatorGuard {
             amountOut,
             minAmountOut
         );
+
+        return amountOut;
     }
 }
