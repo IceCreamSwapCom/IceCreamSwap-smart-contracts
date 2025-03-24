@@ -35,7 +35,7 @@ contract AggregatorGuard {
         IERC20 tokenOut;
 
         assembly {
-            id := shr(96, calldataload(4))
+            id := shr(240, calldataload(4))
             executor := shr(96, calldataload(6))
             amountIn := shr(128, calldataload(26))
             minAmountOut := shr(128, calldataload(42))
@@ -57,7 +57,7 @@ contract AggregatorGuard {
 
         uint256 balanceBefore = (address(tokenOut) == ETH) ? recipient.balance : tokenOut.balanceOf(recipient);
 
-        executor.executeSwap{value: msg.value}(msg.data[24:]);
+        executor.executeSwap{value: msg.value}(msg.data[26:]);
 
         uint256 amountOut;
         if (address(tokenOut) != ETH) {
