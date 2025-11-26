@@ -50,6 +50,8 @@ contract MulticallCombined {
         bytes returnData;
     }
 
+    receive() external payable {}
+
     /// @notice Backwards-compatible call aggregation with Multicall
     /// @param calls An array of Call structs
     /// @return blockNumber The block number where the calls were executed
@@ -132,16 +134,16 @@ contract MulticallCombined {
             calli = calls[i];
             (result.success, result.returnData) = calli.target.call(calli.callData);
             assembly {
-            // Revert if the call fails and failure is not allowed
-            // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
+                // Revert if the call fails and failure is not allowed
+                // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
                 if iszero(or(calldataload(add(calli, 0x20)), mload(result))) {
-                // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
+                    // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
                     mstore(0x00, 0x08c379a000000000000000000000000000000000000000000000000000000000)
-                // set data offset
+                    // set data offset
                     mstore(0x04, 0x0000000000000000000000000000000000000000000000000000000000000020)
-                // set length of revert string
+                    // set length of revert string
                     mstore(0x24, 0x0000000000000000000000000000000000000000000000000000000000000017)
-                // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
+                    // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
                     mstore(0x44, 0x4d756c746963616c6c333a2063616c6c206661696c6564000000000000000000)
                     revert(0x00, 0x64)
                 }
@@ -172,16 +174,16 @@ contract MulticallCombined {
             }
             (result.success, result.returnData) = calli.target.call{value: val}(calli.callData);
             assembly {
-            // Revert if the call fails and failure is not allowed
-            // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
+                // Revert if the call fails and failure is not allowed
+                // `allowFailure := calldataload(add(calli, 0x20))` and `success := mload(result)`
                 if iszero(or(calldataload(add(calli, 0x20)), mload(result))) {
-                // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
+                    // set "Error(string)" signature: bytes32(bytes4(keccak256("Error(string)")))
                     mstore(0x00, 0x08c379a000000000000000000000000000000000000000000000000000000000)
-                // set data offset
+                    // set data offset
                     mstore(0x04, 0x0000000000000000000000000000000000000000000000000000000000000020)
-                // set length of revert string
+                    // set length of revert string
                     mstore(0x24, 0x0000000000000000000000000000000000000000000000000000000000000017)
-                // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
+                    // set revert string: bytes32(abi.encodePacked("Multicall3: call failed"))
                     mstore(0x44, 0x4d756c746963616c6c333a2063616c6c206661696c6564000000000000000000)
                     revert(0x00, 0x84)
                 }
