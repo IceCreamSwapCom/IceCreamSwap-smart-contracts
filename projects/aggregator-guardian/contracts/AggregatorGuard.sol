@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 import "./interfaces/IAggregatorExecutor.sol";
+import "./interfaces/IERC20Unsafe.sol";
 
 contract AggregatorGuard {
 
@@ -23,6 +22,7 @@ contract AggregatorGuard {
     receive() external payable { }
     fallback() external payable { } // optional, add for remix to allow low level interactions
 
+    // takes packed calldata
     function IceCreamSwap() external payable returns (uint256) {
         uint16 id;
         IAggregatorExecutor executor;
@@ -31,40 +31,36 @@ contract AggregatorGuard {
 
         address firstTokenReceiver;
         address recipient;
-        IERC20 tokenIn;
-        IERC20 tokenOut;
+        IERC20Unsafe tokenIn;
+        IERC20Unsafe tokenOut;
 
-        assembly {
-            id := shr(240, calldataload(4))
-            executor := shr(96, calldataload(6))
-            amountIn := shr(128, calldataload(26))
-            minAmountOut := shr(128, calldataload(42))
-            firstTokenReceiver := shr(96, calldataload(59))
-            recipient := shr(96, calldataload(79))
-            tokenIn := shr(96, calldataload(99))
-            tokenOut := shr(96, calldataload(119))
+        assembly ("memory-safe") {
+            // low level packed calldata decoding to decrease calldata size
+            id := shr(240, calldataload(4))                 // [004-005] 02 bytes
+            executor := shr(96, calldataload(6))            // [006-025] 20 bytes
+            amountIn := shr(128, calldataload(26))          // [026-041] 16 bytes
+            minAmountOut := shr(128, calldataload(42))      // [042-057] 16 bytes
+                                                            // [058]     01 byte gab
+            firstTokenReceiver := shr(96, calldataload(59)) // [059-078] 20 bytes
+            recipient := shr(96, calldataload(79))          // [079-098] 20 bytes
+            tokenIn := shr(96, calldataload(99))            // [099-118] 20 bytes
+            tokenOut := shr(96, calldataload(119))          // [119-138] 20 bytes
         }
 
-        if (address(tokenIn) != ETH) {
-            // no need to check this token transfer, as a non sucessfull transfer would just cause a failed swap
-            if (amountIn != 0) {
-                tokenIn.transferFrom(msg.sender, firstTokenReceiver, amountIn);
-            }
-        } else {
+        if (address(tokenIn) == ETH) {
             require(amountIn == msg.value, "incorrect value");
-            require(firstTokenReceiver == address(executor), "Native receiver must bee executor");
+            require(firstTokenReceiver == address(executor), "Native receiver must be executor");
+        } else {
+            // no need to check this token transfer, as a non successful transfer would just cause a failed swap
+            if (amountIn != 0) tokenIn.transferFrom(msg.sender, firstTokenReceiver, amountIn);
         }
 
         uint256 balanceBefore = (address(tokenOut) == ETH) ? recipient.balance : tokenOut.balanceOf(recipient);
 
         executor.executeSwap{value: msg.value}(msg.data[26:]);
 
-        uint256 amountOut;
-        if (address(tokenOut) != ETH) {
-            amountOut = tokenOut.balanceOf(recipient) - balanceBefore;
-        } else {
-            amountOut = recipient.balance - balanceBefore;
-        }
+        uint256 amountOut = ((address(tokenOut) == ETH) ? recipient.balance : tokenOut.balanceOf(recipient)) - balanceBefore;
+
         require(amountOut >= minAmountOut, "Insufficient output");
 
         emit AggregatedTrade(
