@@ -1,4 +1,11 @@
-import { bridgeConfig, deployAndVerify, dexConfig, getChainConfig, transactSafe } from "@icecreamswap/common";
+import {
+  bridgeConfig,
+  deployAndVerify,
+  dexConfig,
+  getChainConfig,
+  transactSafe,
+  tryVerify
+} from "@icecreamswap/common";
 import { writeFileSync, existsSync, readFileSync } from "fs";
 import { ethers } from "hardhat";
 import prompt from "@icecreamswap/common/dist/nodePrompt";
@@ -25,7 +32,7 @@ async function main() {
     ChefFactoryInstance = await ethers.getContractAt("SmartChefFactory", contracts.factory);
   }
 
-  
+
   // staked token address
   var staking_token_address = ethers.getAddress(await prompt(`Please enter the staked token address: `));
 
@@ -70,44 +77,50 @@ async function main() {
   }
 
   // deploy pool
-  const receipt = await transactSafe(ChefFactoryInstance.deployPool, [
-    staking_token_address,
-    reward_token_address,
-    rewards_per_block_wei,
-    BigInt(start_block),
-    BigInt(end_block),
-    ethers.parseUnits(pool_limit_per_user.toString(), decimals),
-    ethers.parseUnits(block_number_limit_per_user.toString(), decimals),
-    dexConfig.dexAdmin,
-  ]);
-  //const receipt = await ethers.provider.getTransactionReceipt("0x64d3c1d2ceb75df5c8aff29c929822848990441b006a3f2e281ccd544c4895c0")
-  console.log("Transaction sent. Waiting for confirmation...");
+const receipt = await transactSafe(ChefFactoryInstance.deployPool, [
+  staking_token_address,
+  reward_token_address,
+  rewards_per_block_wei,
+  BigInt(start_block),
+  BigInt(end_block),
+  ethers.parseUnits(pool_limit_per_user.toString(), decimals),
+  ethers.parseUnits(block_number_limit_per_user.toString(), decimals),
+  dexConfig.dexAdmin,
+]);
 
 
-  // Extract the SmartChef contract address from event logs
-  if (receipt.status != 1){
-    throw 'Transaction failed';
-  }
+//const receipt = await ethers.provider.getTransactionReceipt("0x64d3c1d2ceb75df5c8aff29c929822848990441b006a3f2e281ccd544c4895c0");
+console.log("Transaction sent. Waiting for confirmation...");
 
-  for (let i = 1; i < receipt.logs.length; i++) {
-    if (ChefFactoryInstance.interface.parseLog(receipt.logs[i])["name"] == "NewSmartChefContract") {
-      let addressHex = receipt.logs[i]["topics"][1];
-      if (addressHex.startsWith('0x000000000000000000000000')) {
-        addressHex = '0x' + addressHex.slice(26); // Get the last 40 characters (the actual address)
-      }
-      const decodedAddress = ethers.getAddress(addressHex);
 
-      contracts.pools.push({
-        pool: decodedAddress,
-        staking_token: staking_token_address,
-        reward_token_address: reward_token_address,
-        tokenPerBlock: ethers.formatUnits(rewards_per_block_wei, decimals)
-      });
+// Extract the SmartChef contract address from event logs
+if (receipt.status != 1){
+  throw 'Transaction failed';
+}
 
-      writeFileSync(`./deployments/${chainName}.json`, JSON.stringify(contracts, null, 2));
-
+for (let i = 1; i < receipt.logs.length; i++) {
+  if (ChefFactoryInstance.interface.parseLog(receipt.logs[i])["name"] == "NewSmartChefContract") {
+    let addressHex = receipt.logs[i]["topics"][1];
+    if (addressHex.startsWith('0x000000000000000000000000')) {
+      addressHex = '0x' + addressHex.slice(26); // Get the last 40 characters (the actual address)
     }
+    const decodedAddress = ethers.getAddress(addressHex);
+
+    contracts.pools.push({
+      pool: decodedAddress,
+      staking_token: staking_token_address,
+      reward_token_address: reward_token_address,
+      tokenPerBlock: ethers.formatUnits(rewards_per_block_wei, decimals)
+    });
+
+
+    writeFileSync(`./deployments/${chainName}.json`, JSON.stringify(contracts, null, 2));
+
+    const poolContract = await ethers.getContractAt("SmartChefInitializable", decodedAddress);
+    await tryVerify(poolContract.target, []);
+
   }
+}
 
 
 }
@@ -115,6 +128,6 @@ async function main() {
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+console.error(error);
+process.exitCode = 1;
 });
